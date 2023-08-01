@@ -13,8 +13,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Cinetopia'),
       ),
       body: const Center(
-        child: Text(
-          'Hello World',
+        child: Text('Home Screen'
         ),
       ),
     );
