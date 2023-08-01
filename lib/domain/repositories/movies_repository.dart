@@ -1,7 +1,8 @@
 import 'package:cinetopia/domain/entities/movie.dart';
 
-abstract class MovieRepository {
 
-  Future<List<Movie>> getNowPlaying({ int page =1 });
+abstract class MoviesRepository {
+
+  Future<List<Movie>> getNowPlaying({ int page = 1 });
 
 }
