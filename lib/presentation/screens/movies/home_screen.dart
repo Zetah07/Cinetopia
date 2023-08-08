@@ -1,13 +1,17 @@
-import 'package:cinetopia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:cinetopia/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+import 'package:cinetopia/presentation/providers/providers.dart';
+import 'package:cinetopia/presentation/widgets/widgets.dart';
 
 
 
 class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
+  
 
   const HomeScreen({super.key});
 
@@ -41,7 +45,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
 
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
+      
+      initializeDateFormatting('es');
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('EEEE d', 'es').format(now);
 
     final initialLoading = ref.watch(initialLoadingProvider);
     if ( initialLoading ) return const FullScreenLoader();
@@ -59,6 +67,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
           floating: true,
           flexibleSpace: FlexibleSpaceBar(
             title: CustomAppbar(),
+            titlePadding: EdgeInsets.all(5),
           ),
         ),
 
@@ -75,7 +84,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                     MovieHorizontalListview(
                       movies: nowPlayingMovies,
                       title: 'En cines',
-                      subTitle: 'Lunes 20',
+                      subTitle: 'hoy: $formattedDate',
                       loadNextPage: () =>ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
                       
                     ),
