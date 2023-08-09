@@ -1,7 +1,11 @@
-import 'package:cinetopia/presentation/delegate/search_movie_delegate.dart';
-import 'package:cinetopia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:cinetopia/domain/entities/movie.dart';
+
+import 'package:cinetopia/presentation/delegate/search_movie_delegate.dart';
+import 'package:cinetopia/presentation/providers/providers.dart';
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
@@ -15,23 +19,35 @@ class CustomAppbar extends ConsumerWidget {
     return SafeArea(
       bottom: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric( horizontal: 10, vertical: 5 ),
+        padding: const EdgeInsets.symmetric( horizontal: 10 ),
         child: SizedBox(
           width: double.infinity,
           child: Row(
             children: [
               Icon( Icons.movie_outlined, color: colors.primary ),
               const SizedBox( width: 5 ),
-              Text('cinetopia', style: titleStyle ),
+              Text('Cinemapedia', style: titleStyle ),
+      
               const Spacer(),
       
-              IconButton(onPressed: (){
-                final movieRepository = ref.read(movieRepositoryProvider);
+              IconButton(onPressed: () {
 
-                showSearch(context: context, delegate: SearchMovieDelegate(
-                  searchMovies: movieRepository.searchMovies
-                  
-                ));
+                final searchedMovies = ref.read( searchedMoviesProvider );
+                final searchQuery = ref.read(searchQueryProvider);
+                
+                showSearch<Movie?>(
+                  query: searchQuery,
+                  context: context, 
+                  delegate: SearchMovieDelegate(
+                    initialMovies: searchedMovies,
+                    searchMovies: ref.read( searchedMoviesProvider.notifier ).searchMoviesByQuery
+                  )
+                ).then((movie) {
+                  if ( movie == null ) return;
+
+                  context.push('/movie/${ movie.id }');
+                });
+
               }, 
               icon: const Icon(Icons.search)
               )
