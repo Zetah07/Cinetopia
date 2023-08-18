@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:cinetopia/presentation/providers/providers.dart';
 import 'package:cinetopia/presentation/widgets/widgets.dart';
@@ -27,6 +29,10 @@ class HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+
+    initializeDateFormatting('es');
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('EEEE d', 'es').format(now);
 
     final initialLoading = ref.watch(initialLoadingProvider);
     if ( initialLoading ) return const FullScreenLoader();
@@ -60,7 +66,7 @@ class HomeViewState extends ConsumerState<HomeView> {
                     MovieHorizontalListview(
                       movies: nowPlayingMovies,
                       title: 'En cines',
-                      subTitle: 'Lunes 20',
+                      subTitle:  'hoy: $formattedDate',
                       loadNextPage: () =>ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
                       
                     ),
