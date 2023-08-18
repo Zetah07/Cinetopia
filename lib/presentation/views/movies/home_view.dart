@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:cinetopia/presentation/providers/providers.dart';
 import 'package:cinetopia/presentation/widgets/widgets.dart';
@@ -29,6 +31,10 @@ class HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClien
   Widget build(BuildContext context) {
     super.build(context);
 
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd MMMM', 'es').format(now);
+    initializeDateFormatting('es');
+
     final initialLoading = ref.watch(initialLoadingProvider);
     if ( initialLoading ) return const FullScreenLoader();
     
@@ -52,34 +58,24 @@ class HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClien
           (context, index) {
               return Column(
                   children: [
-              
-                    // const CustomAppbar(),
-              
+
                     MoviesSlideshow(movies: slideShowMovies ),
-              
+
                     MovieHorizontalListview(
                       movies: nowPlayingMovies,
                       title: 'En cines',
-                      subTitle: 'Lunes 20',
+                      subTitle: 'Hoy $formattedDate',
                       loadNextPage: () =>ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
                       
                     ),
-              
+
                     MovieHorizontalListview(
                       movies: upcomingMovies,
                       title: 'Próximamente',
                       subTitle: 'En este mes',
                       loadNextPage: () =>ref.read(upcomingMoviesProvider.notifier).loadNextPage()
                     ),
-              
-                    //* Ya no estará aquí, ahora es parte del menú inferior
-                    // MovieHorizontalListview(
-                    //   movies: popularMovies,
-                    //   title: 'Populares',
-                    //   // subTitle: '',
-                    //   loadNextPage: () =>ref.read(popularMoviesProvider.notifier).loadNextPage()
-                    // ),
-              
+
                     MovieHorizontalListview(
                       movies: topRatedMovies,
                       title: 'Mejor calificadas',
@@ -88,8 +84,8 @@ class HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClien
                     ),
 
                     const SizedBox( height: 10 ),
-              
-              
+
+
                   ],
                 );
           },
