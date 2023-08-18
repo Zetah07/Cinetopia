@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:cinetopia/domain/entities/movie.dart';
 
-import 'package:cinetopia/presentation/delegate/search_movie_delegate.dart';
+import 'package:cinetopia/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinetopia/presentation/providers/providers.dart';
 
 class CustomAppbar extends ConsumerWidget {
@@ -26,7 +26,7 @@ class CustomAppbar extends ConsumerWidget {
             children: [
               Icon( Icons.movie_outlined, color: colors.primary ),
               const SizedBox( width: 5 ),
-              Text('Cinemapedia', style: titleStyle ),
+              Text('cinetopia', style: titleStyle ),
       
               const Spacer(),
       
@@ -45,7 +45,7 @@ class CustomAppbar extends ConsumerWidget {
                 ).then((movie) {
                   if ( movie == null ) return;
 
-                  context.push('/movie/${ movie.id }');
+                  context.push('/home/0/movie/${ movie.id }');
                 });
 
               }, 

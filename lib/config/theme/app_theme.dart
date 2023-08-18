@@ -8,7 +8,7 @@ class AppTheme {
 
   ThemeData getTheme() => ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: Colors.deepPurpleAccent,
+    colorSchemeSeed: const Color(0xFF2862F5)
   );
 
 

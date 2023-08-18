@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+
 import 'package:cinetopia/presentation/widgets/widgets.dart';
+import 'package:cinetopia/presentation/views/views.dart';
 
 
 
 class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
-
-  final Widget childView;
-
+  final int pageIndex;
 
   const HomeScreen({
     super.key, 
-    required this.childView,
-    // required int pageIndex
+    required this.pageIndex
   });
+
+  final viewRoutes =  const <Widget>[
+    HomeView(),
+    SizedBox(), // <--- categorias View
+    FavoritesView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: childView,
-      bottomNavigationBar: const CustomBottomNavigation(),
+      body: IndexedStack(
+        index: pageIndex,
+        children: viewRoutes,
+      ),
+      bottomNavigationBar: CustomBottomNavigation( currentIndex: pageIndex ),
     );
   }
 }
+
